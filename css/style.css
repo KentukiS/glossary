@@ -1,0 +1,51 @@
+#headerMenu{
+ width: 100%;
+ background: #D8E3AB;
+ height: 70px;
+}
+
+.parentBlock{
+	justify-content: space-evenly;
+	flex-direction: column;
+	width: 100%;
+	position: relative;
+}
+
+.adminTitle{
+	width: 50%;
+	text-align: center;
+}
+/*.translateBlock{
+	display: flex;
+}*/
+.preClass
+{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.preAddClass
+{
+  display: flex;
+  
+}
+
+.translateBlock {
+	
+	width: 35%;
+}
+
+.translateBlock:nth-of-type(odd){
+	background: #d8e3ab;
+}
+
+.translateBlock:nth-of-type(even){
+	background: #8e8ef1;
+}
+
+.buy_new{
+	position: absolute;
+    top: 10%;
+    left: 50%;
+}

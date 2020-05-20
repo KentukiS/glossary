@@ -1,0 +1,136 @@
+<?php session_start();
+
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+
+include($_SERVER["DOCUMENT_ROOT"] ."/includes/header.php"); ?>
+<h2>Our glossary</h2>
+
+<form method="post" action="">
+    <input type="search" name="query" style="width: 400px;" placeholder="Write down the name of the term">
+    <input type="submit" name="searchButton" value="search">
+</form>
+
+<?php // ПОИСК 
+ 
+  if (isset($_POST['searchButton'])){
+    $searchStorage = $_POST['query'];
+    $searchResult = $mysqli->query("SELECT * FROM `translates` WHERE `name_original` = '".$searchStorage."' "); // ВЫВОД ВСЕХ ТЕРМИНОВ
+
+    $fNameId = 1;
+    $sNameId = 100;
+    $fName = 1000;
+    $sName = 10000;
+    $butName = 300;
+
+
+    foreach($searchResult as $searchFields){ 
+
+        $fNameId++;
+        $sNameId++;
+        $fName++;
+        $sName++;
+        $butName++;
+
+        echo "<div class = 'translateBlock'>";
+
+           echo "<div style='display:none'>". $searchFields['translate_id'] . "</div>";
+
+           echo "<br>Term</br>";
+           echo "<form method='POST' id='formRefresh' action=''>";
+
+           echo "<pre class = 'preClass'><p class = 'text'>Original term name</p>";
+           echo "<textarea name='"."q".$fNameId."'>" . $searchFields['name_original'] . "</textarea>";
+           echo "</pre>";
+
+           echo "<pre class = 'preClass'><p class = 'text'>Original term description</p>";
+           echo "<textarea name='"."a".$sNameId."'>" . $searchFields['desc_original'] . "</textarea>";
+           echo "</pre>";
+
+           echo "<br>Translation</br>";
+
+           echo "<pre class = 'preClass'><p class = 'text'>translation of the term</p>";
+           echo "<textarea name='"."z".$sName."'>" . $searchFields['name_translate'] . "</textarea>";
+           echo "</pre>";
+
+           echo "<pre class = 'preClass'><p class = 'text'>translation of the term description</p>";
+           echo "<textarea name='"."x".$fName."'>" . $searchFields['desc_translate'] . "</textarea>";
+           echo "</pre>";
+
+           if(isset($_SESSION["session_username"]) && $prava['permission'] == "1") {
+               echo "<input type='submit' name='"."submit".$butName."' value='update translate'/> <br>";
+              } else {
+                echo "You can buy a professional account to edit the general glossary.";
+
+           }
+
+           echo "</form>";
+        echo "</div>";
+        exit();
+    }
+       
+if($searchFields['name_original'] == false){
+  die("NOTHING FOUND");
+}
+
+
+    }
+  
+?>
+<p></p>
+
+<?php 
+
+$result = $mysqli->query("SELECT * FROM `translates` "); // ВЫВОД ВСЕХ ТЕРМИНОВ
+$pravaSql = $mysqli->query("SELECT permission FROM usertbl WHERE username = '".$_SESSION['session_username']."' ");
+	    // $result = mysqli_fetch_array($result);
+    foreach($pravaSql as $prava){} // Вытаскиваем поля по умолчанию
+
+  	
+    foreach($result as $key){ 
+       
+
+       	$fNameId++;
+       	$sNameId++;
+       	$fName++;
+       	$sName++;
+       	$butName++;
+
+       	echo "<div class = 'translateBlock'>";
+
+       	   echo "<div style='display:none'>". $key['translate_id'] . "</div>";
+
+           echo "<br>Term</br>";
+       	   echo "<form method='POST' id='formRefresh' action=''>";
+
+       	   echo "<pre class = 'preClass'><p class = 'text'>Original term name</p>";
+           echo "<textarea name='"."g".$fNameId."'>" . $key['name_original'] . "</textarea>";
+           echo "</pre>";
+
+           echo "<pre class = 'preClass'><p class = 'text'>Original term description</p>";
+           echo "<textarea name='"."h".$sNameId."'>" . $key['desc_original'] . "</textarea>";
+           echo "</pre>";
+
+           echo "<br>Translation</br>";
+
+           echo "<pre class = 'preClass'><p class = 'text'>translation of the term</p>";
+           echo "<textarea name='"."j".$sName."'>" . $key['name_translate'] . "</textarea>";
+           echo "</pre>";
+
+           echo "<pre class = 'preClass'><p class = 'text'>translation of the term description</p>";
+           echo "<textarea name='"."k".$fName."'>" . $key['desc_translate'] . "</textarea>";
+           echo "</pre>";
+
+           if(isset($_SESSION["session_username"]) && $prava['permission'] == "1") {
+           		 echo "<input type='submit' name='"."submit".$butName."' value='update translate'/> <br>";
+              } else {
+                echo "You can buy a professional account to edit the general glossary.";
+
+           }
+
+           echo "</form>";
+       	echo "</div>";
+    }
+    ?>
+</body>
+</html>
